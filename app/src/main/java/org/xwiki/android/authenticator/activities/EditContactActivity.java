@@ -106,14 +106,16 @@ public class EditContactActivity extends AppCompatActivity {
         }
 
         Log.i("rawContactId", rawContactId+"");
-        RawContact rawContact = ContactManager.getRawContact(getApplicationContext(), rawContactId);
-        BatchOperation batchOperation = new BatchOperation(getApplicationContext(), getContentResolver());
-        rawContact.mFirstName = mFullNameView.getText().toString();
-        rawContact.mFullName = mFullNameView.getText().toString();
-        rawContact.mCellPhone = mCellPhoneView.getText().toString();
-        rawContact.mEmail = mEmailView.getText().toString();
-        Log.i("edit",rawContact.toString());
-        ContactManager.updateContactLocal(this, getContentResolver(), rawContact, rawContactId);
+//        RawContact rawContact = ContactManager.getRawContact(getApplicationContext(), rawContactId);
+//        BatchOperation batchOperation = new BatchOperation(getApplicationContext(), getContentResolver());
+//        rawContact.mFirstName = mFullNameView.getText().toString();
+//        rawContact.mFullName = mFullNameView.getText().toString();
+//        rawContact.mCellPhone = mCellPhoneView.getText().toString();
+//        rawContact.mEmail = mEmailView.getText().toString();
+//        Log.i("edit",rawContact.toString());
+//        ContactManager.updateContactLocal(this, getContentResolver(), rawContact, rawContactId);
+
+
 //        ContactManager.updateContact(getApplicationContext(),getContentResolver(),rawContact,false,false,false,true,rawContactId,batchOperation);
 
 //        ContentValues values = new ContentValues();

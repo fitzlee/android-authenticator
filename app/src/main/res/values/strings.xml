@@ -30,4 +30,8 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
 
+    <!--contacts.xml-->
+    <string name="view_group_action_label">Show sample group details</string>
+    <string name="invite_action_label">Add to Sample SyncAdaper</string>
+
 </resources>
