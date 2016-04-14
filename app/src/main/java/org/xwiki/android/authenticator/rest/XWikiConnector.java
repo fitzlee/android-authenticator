@@ -162,6 +162,22 @@ final public class XWikiConnector {
         return null;
     }
 
+    List<XWikiUser> getAllUsers(){
+        String searchUserUrl = "http://localhost:8080/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers";
+
+        return null;
+    }
+
+    XWikiUser getUserInformatin(String url){
+        String userInfo = "http://localhost:8080/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/FitzLee/objects/XWiki.XWikiUsers/0";
+        URL parsedUrl = new URL(url);
+        HttpURLConnection connection = openConnection(parsedUrl, request);
+
+        return null;
+    }
+
+
+
     /**
      * Connects to the SampleSync test server, authenticates the provided
      * username and password.
