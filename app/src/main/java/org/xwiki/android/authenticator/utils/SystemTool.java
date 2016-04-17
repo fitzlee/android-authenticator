@@ -112,17 +112,17 @@ public final class SystemTool {
         return info != null;// 网络是否连接
     }
 
-    /**
-     * 仅wifi联网功能是否开启
-     */
-    public static boolean checkOnlyWifi(Context context) {
-        if (PreferenceHelper.readBoolean(context, KJConfig.SETTING_FILE,
-                KJConfig.ONLY_WIFI)) {
-            return isWiFi(context);
-        } else {
-            return true;
-        }
-    }
+//    /**
+//     * 仅wifi联网功能是否开启
+//     */
+//    public static boolean checkOnlyWifi(Context context) {
+//        if (PreferenceHelper.readBoolean(context, KJConfig.SETTING_FILE,
+//                KJConfig.ONLY_WIFI)) {
+//            return isWiFi(context);
+//        } else {
+//            return true;
+//        }
+//    }
 
     /**
      * 判断是否为wifi联网

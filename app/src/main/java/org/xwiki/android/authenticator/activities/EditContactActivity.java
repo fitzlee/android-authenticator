@@ -23,11 +23,18 @@ import android.widget.Toast;
 
 
 import org.xwiki.android.authenticator.R;
+import org.xwiki.android.authenticator.bean.SearchResult;
+import org.xwiki.android.authenticator.rest.AsynNetUtils;
+import org.xwiki.android.authenticator.rest.XmlUtils;
 import org.xwiki.android.authenticator.syncadapter.BatchOperation;
 import org.xwiki.android.authenticator.syncadapter.ContactManager;
 import org.xwiki.android.authenticator.syncadapter.RawContact;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -64,6 +71,37 @@ public class EditContactActivity extends AppCompatActivity {
         mContactInfoTextView = (TextView) findViewById(R.id.contactinfo);
 
 //        fetchContacts(mUri);
+//        testGET();
+    }
+
+
+    void testGET(){
+        String requestUrl = "http://10.200.219.252:8080/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers";
+        AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
+            @Override
+            public void onResponse(String response) {
+                mContactInfoTextView.setText(response);
+                List<SearchResult> list = XmlUtils.getSearchResults(new ByteArrayInputStream(response.getBytes()));
+                mContactInfoTextView.append(list.toString());
+            }
+        });
+    }
+
+
+    void apiTest(){
+        //sql query  getUsersModified getUsersModifiedFromOneGroup getAllGroups
+        // xml -> searchResult -> objects -> objects detail　-> store db
+
+        //modify or edit object ->  xml -> requestUpdate put post -> server
+        //updateUser deleteUser
+        //
+    }
+
+
+
+    void testPost(){
+        String posturl = "http://localhost:8080/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/FitzLee/objects/XWiki.XWikiUsers/0";
+
 
     }
 
