@@ -1,10 +1,12 @@
 package org.xwiki.android.authenticator.rest;
 
 import android.content.res.XmlResourceParser;
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xwiki.android.authenticator.bean.SearchResult;
+import org.xwiki.android.authenticator.bean.XWikiUsers;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -70,4 +72,43 @@ public class XmlUtils {
         }
         return null;
     }
+
+    public static XWikiUsers getXWikiUsers(InputStream inStream) {
+        XmlPullParser parser = Xml.newPullParser();
+        try {
+            parser.setInput(inStream, "UTF-8");
+            int eventType = parser.getEventType();
+            XWikiUsers user = new XWikiUsers();
+            String name = null;
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if(eventType != XmlPullParser.START_TAG){
+                    eventType = parser.next();
+                    continue;
+                }
+                String tag = parser.getName();
+                if(tag.equalsIgnoreCase("pageName")){
+                    user.id = parser.nextText();
+                }else if(tag.equalsIgnoreCase("property")){
+                    name = parser.getAttributeValue(null, "name");
+                }else if(tag.equalsIgnoreCase("value")){
+                    if(name.equalsIgnoreCase("phone")) {
+                        user.phone = parser.nextText();
+                    }else if(name.equalsIgnoreCase("email")){
+                        user.mail = parser.nextText();
+                    }else if(name.equalsIgnoreCase("last_name")){
+                        user.last_name = parser.nextText();
+                    }else if(name.equalsIgnoreCase("first_name")){
+                        user.first_name = parser.nextText();
+                    }
+                }
+                eventType = parser.next();
+            }
+            user.fullName = user.first_name + user.last_name;
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

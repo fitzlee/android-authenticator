@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xwiki.android.authenticator.rest;
+package org.xwiki.android.authenticator.restbackup;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;

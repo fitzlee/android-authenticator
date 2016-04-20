@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.xwiki.android.authenticator.rest;
+package org.xwiki.android.authenticator.restbackup;
 
 import android.graphics.Bitmap;
 
 import java.util.Map;
 
 /**
- * Http请求回调类<br>
- * 
- * <b>创建时间</b> 2014-8-7
- *
- * @author kymjs (http://www.kymjs.com/) .
- * @version 1.4
+ * Created by fitz on 2016/4/16.
  */
 public abstract class HttpCallBack {
-
     /**
      * 请求开始之前回调
      */

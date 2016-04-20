@@ -13,14 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.xwiki.android.authenticator.rest;
+package org.xwiki.android.authenticator.restbackup;
 
 import android.net.TrafficStats;
 import android.net.Uri;
-import android.os.SystemClock;
 import android.text.TextUtils;
-
-import org.xwiki.android.authenticator.utils.Loger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

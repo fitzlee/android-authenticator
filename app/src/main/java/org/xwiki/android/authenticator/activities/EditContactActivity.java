@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import org.xwiki.android.authenticator.R;
 import org.xwiki.android.authenticator.bean.SearchResult;
+import org.xwiki.android.authenticator.bean.XWikiUsers;
 import org.xwiki.android.authenticator.rest.AsynNetUtils;
+import org.xwiki.android.authenticator.rest.UserManager;
 import org.xwiki.android.authenticator.rest.XmlUtils;
 import org.xwiki.android.authenticator.syncadapter.BatchOperation;
 import org.xwiki.android.authenticator.syncadapter.ContactManager;
@@ -71,18 +73,41 @@ public class EditContactActivity extends AppCompatActivity {
         mContactInfoTextView = (TextView) findViewById(R.id.contactinfo);
 
 //        fetchContacts(mUri);
-//        testGET();
+//        testGETUsers();
+//        testGetUserInfo();
+        testGETAllUsers();
     }
 
+    void testGETAllUsers(){
+        String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers&number=20";
+        UserManager.getAllUser(requestUrl, new UserManager.Callback() {
+            @Override
+            public void onResponse(List<XWikiUsers> usersList) {
+                mContactInfoTextView.setText(usersList.toString());
+            }
+        });
+    }
 
     void testGET(){
-        String requestUrl = "http://10.200.219.252:8080/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers";
+        String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers&number=20";
         AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
             @Override
             public void onResponse(String response) {
                 mContactInfoTextView.setText(response);
                 List<SearchResult> list = XmlUtils.getSearchResults(new ByteArrayInputStream(response.getBytes()));
                 mContactInfoTextView.append(list.toString());
+            }
+        });
+    }
+
+    void testGetUserInfo(){
+        String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/fitz/objects/XWiki.XWikiUsers/0";
+        AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
+            @Override
+            public void onResponse(String response) {
+                mContactInfoTextView.setText(response);
+                XWikiUsers user = XmlUtils.getXWikiUsers(new ByteArrayInputStream(response.getBytes()));
+                mContactInfoTextView.setText(user.toString());
             }
         });
     }
@@ -97,13 +122,6 @@ public class EditContactActivity extends AppCompatActivity {
         //
     }
 
-
-
-    void testPost(){
-        String posturl = "http://localhost:8080/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/FitzLee/objects/XWiki.XWikiUsers/0";
-
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

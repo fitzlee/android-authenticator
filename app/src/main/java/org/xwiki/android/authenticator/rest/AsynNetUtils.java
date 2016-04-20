@@ -2,8 +2,15 @@ package org.xwiki.android.authenticator.rest;
 
 import android.os.Handler;
 
+import org.xwiki.android.authenticator.bean.SearchResult;
+import org.xwiki.android.authenticator.bean.XWikiUsers;
+
+import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by lf on 2016/4/16.
+ * Created by fitz on 2016/4/16.
  */
 public class AsynNetUtils {
     public interface Callback{
@@ -41,4 +48,5 @@ public class AsynNetUtils {
             }
         }).start();
     }
+
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xwiki.android.authenticator.rest;
+package org.xwiki.android.authenticator.restbackup;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,7 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.xwiki.android.authenticator.rest.Request.HttpMethod;
+
+import org.xwiki.android.authenticator.restbackup.Request.HttpMethod;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
@@ -64,7 +65,7 @@ public class HttpConnect{
     }
 
     public HttpResponse performRequest(Request<?> request,
-                                         Map<String, String> additionalHeaders) throws IOException {
+                                       Map<String, String> additionalHeaders) throws IOException {
         String url = request.getUrl();
         HashMap<String, String> map = new HashMap<String, String>();
         map.putAll(request.getHeaders());

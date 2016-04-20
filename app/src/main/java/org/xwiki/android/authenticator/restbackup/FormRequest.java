@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.xwiki.android.authenticator.rest;
+package org.xwiki.android.authenticator.restbackup;
 
 import org.xwiki.android.authenticator.utils.Loger;
 
@@ -22,9 +22,8 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Form表单形式的Http请求
- *
- * @author kymjs
+ * Form http request
+ * Created by fitz on 2016/4/16.
  */
 public class FormRequest extends Request<byte[]> {
 

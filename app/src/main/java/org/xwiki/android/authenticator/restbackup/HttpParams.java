@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xwiki.android.authenticator.rest;
+package org.xwiki.android.authenticator.restbackup;
 
 import android.text.TextUtils;
 import android.util.Log;
