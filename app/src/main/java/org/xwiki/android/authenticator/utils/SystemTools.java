@@ -1,22 +1,6 @@
-/*
- * Copyright (c) 2014,KJFrameForAndroid Open Source Project,张涛.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.xwiki.android.authenticator.utils;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -32,41 +16,20 @@ import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
-import android.view.inputmethod.InputMethodManager;
 
 import java.io.File;
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
- * 系统信息工具包<br>
- * 
- * <b>创建时间</b> 2014-8-14
- * 
- * @author kymjs (https://github.com/kymjs)
- * @version 1.1
+ * system tools
+ *
  */
 @SuppressLint("SimpleDateFormat")
-public final class SystemTool {
-    /**
-     * 指定格式返回当前系统时间
-     */
-    public static String getDataTime(String format) {
-        SimpleDateFormat df = new SimpleDateFormat(format);
-        return df.format(new Date());
-    }
+public final class SystemTools {
 
     /**
-     * 返回当前系统时间(格式以HH:mm形式)
-     */
-    public static String getDataTime() {
-        return getDataTime("HH:mm");
-    }
-
-    /**
-     * 获取手机IMEI码
+     * Get IMEI
      */
     public static String getPhoneIMEI(Context cxt) {
         TelephonyManager tm = (TelephonyManager) cxt
@@ -75,25 +38,25 @@ public final class SystemTool {
     }
 
     /**
-     * 获取手机系统SDK版本
+     * get SDK version
      * 
-     * @return 如API 17 则返回 17
+     * @return if API 17 return 17
      */
     public static int getSDKVersion() {
         return android.os.Build.VERSION.SDK_INT;
     }
 
     /**
-     * 获取系统版本
+     * return System version
      * 
-     * @return 形如2.3.3
+     * @return like 2.3.3
      */
     public static String getSystemVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
 
     /**
-     * 调用系统发送短信
+     * send sms
      */
     public static void sendSMS(Context cxt, String smsBody) {
         Uri smsToUri = Uri.parse("smsto:");
@@ -103,56 +66,31 @@ public final class SystemTool {
     }
 
     /**
-     * 判断网络是否连接
+     * check whether network is connected
      */
     public static boolean checkNet(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
-        return info != null;// 网络是否连接
+        return info != null;
     }
 
-//    /**
-//     * 仅wifi联网功能是否开启
-//     */
-//    public static boolean checkOnlyWifi(Context context) {
-//        if (PreferenceHelper.readBoolean(context, KJConfig.SETTING_FILE,
-//                KJConfig.ONLY_WIFI)) {
-//            return isWiFi(context);
-//        } else {
-//            return true;
-//        }
-//    }
-
     /**
-     * 判断是否为wifi联网
+     * check whether wifi is connected
      */
     public static boolean isWiFi(Context cxt) {
         ConnectivityManager cm = (ConnectivityManager) cxt
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        // wifi的状态：ConnectivityManager.TYPE_WIFI
-        // 3G的状态：ConnectivityManager.TYPE_MOBILE
+        // wifi status：ConnectivityManager.TYPE_WIFI
+        // 3G status：ConnectivityManager.TYPE_MOBILE
         State state = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
                 .getState();
         return State.CONNECTED == state;
     }
 
-    /**
-     * 隐藏系统键盘
-     * 
-     * <br>
-     * <b>警告</b> 必须是确定键盘显示时才能调用
-     */
-    public static void hideKeyBoard(Activity aty) {
-        ((InputMethodManager) aty
-                .getSystemService(Context.INPUT_METHOD_SERVICE))
-                .hideSoftInputFromWindow(
-                        aty.getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-    }
 
     /**
-     * 判断当前应用程序是否后台运行
+     * foreground or background
      */
     public static boolean isBackground(Context context) {
         ActivityManager activityManager = (ActivityManager) context
@@ -162,10 +100,10 @@ public final class SystemTool {
         for (RunningAppProcessInfo appProcess : appProcesses) {
             if (appProcess.processName.equals(context.getPackageName())) {
                 if (appProcess.importance == RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
-                    // 后台运行
+                    // background
                     return true;
                 } else {
-                    // 前台运行
+                    // foreground
                     return false;
                 }
             }
@@ -174,7 +112,7 @@ public final class SystemTool {
     }
 
     /**
-     * 判断手机是否处理睡眠
+     * whether phone is sleeping
      */
     public static boolean isSleeping(Context context) {
         KeyguardManager kgMgr = (KeyguardManager) context
@@ -184,7 +122,7 @@ public final class SystemTool {
     }
 
     /**
-     * 安装apk
+     * apk install
      *
      * @param context
      * @param file
@@ -202,7 +140,7 @@ public final class SystemTool {
     }
 
     /**
-     * 获取当前应用程序的版本号
+     * get app version name
      */
     public static String getAppVersionName(Context context) {
         String version = "0";
@@ -210,14 +148,14 @@ public final class SystemTool {
             version = context.getPackageManager().getPackageInfo(
                     context.getPackageName(), 0).versionName;
         } catch (NameNotFoundException e) {
-            throw new RuntimeException(SystemTool.class.getName()
+            throw new RuntimeException(SystemTools.class.getName()
                     + "the application not found");
         }
         return version;
     }
 
     /**
-     * 获取当前应用程序的版本号
+     * get app version code
      */
     public static int getAppVersionCode(Context context) {
         int version = 0;
@@ -225,14 +163,14 @@ public final class SystemTool {
             version = context.getPackageManager().getPackageInfo(
                     context.getPackageName(), 0).versionCode;
         } catch (NameNotFoundException e) {
-            throw new RuntimeException(SystemTool.class.getName()
+            throw new RuntimeException(SystemTools.class.getName()
                     + "the application not found");
         }
         return version;
     }
 
     /**
-     * 回到home，后台运行
+     * return Home，run in background
      */
     public static void goHome(Context context) {
         Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
@@ -243,7 +181,7 @@ public final class SystemTool {
     }
 
     /**
-     * 获取应用签名
+     * get application signature
      * 
      * @param context
      * @param pkgName
@@ -254,13 +192,13 @@ public final class SystemTool {
                     pkgName, PackageManager.GET_SIGNATURES);
             return hexdigest(pis.signatures[0].toByteArray());
         } catch (NameNotFoundException e) {
-            throw new RuntimeException(SystemTool.class.getName() + "the "
+            throw new RuntimeException(SystemTools.class.getName() + "the "
                     + pkgName + "'s application not found");
         }
     }
 
     /**
-     * 将签名字符串转换成需要的32位签名
+     * transfer signature to 32bit
      */
     private static String hexdigest(byte[] paramArrayOfByte) {
         final char[] hexDigits = { 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97,
@@ -284,34 +222,33 @@ public final class SystemTool {
     }
 
     /**
-     * 获取设备的可用内存大小
+     * available memory size
      * 
      * @param cxt
-     *            应用上下文对象context
-     * @return 当前内存大小
+     *            context
+     * @return memory size
      */
     public static int getDeviceUsableMemory(Context cxt) {
         ActivityManager am = (ActivityManager) cxt
                 .getSystemService(Context.ACTIVITY_SERVICE);
         MemoryInfo mi = new MemoryInfo();
         am.getMemoryInfo(mi);
-        // 返回当前系统的可用内存
         return (int) (mi.availMem / (1024 * 1024));
     }
 
     /**
-     * 清理后台进程与服务
+     * clean services and background
      * 
      * @param cxt
-     *            应用上下文对象context
-     * @return 被清理的数量
+     *            context
+     * @return clean app count
      */
     public static int gc(Context cxt) {
         long i = getDeviceUsableMemory(cxt);
-        int count = 0; // 清理掉的进程数
+        int count = 0; // clean app count
         ActivityManager am = (ActivityManager) cxt
                 .getSystemService(Context.ACTIVITY_SERVICE);
-        // 获取正在运行的service列表
+        // get services which are running.
         List<RunningServiceInfo> serviceList = am.getRunningServices(100);
         if (serviceList != null)
             for (RunningServiceInfo service : serviceList) {
@@ -326,28 +263,28 @@ public final class SystemTool {
                 }
             }
 
-        // 获取正在运行的进程列表
+        // get processes which are running
         List<RunningAppProcessInfo> processList = am.getRunningAppProcesses();
         if (processList != null)
             for (RunningAppProcessInfo process : processList) {
-                // 一般数值大于RunningAppProcessInfo.IMPORTANCE_SERVICE的进程都长时间没用或者空进程了
-                // 一般数值大于RunningAppProcessInfo.IMPORTANCE_VISIBLE的进程都是非可见进程，也就是在后台运行着
+                // >RunningAppProcessInfo.IMPORTANCE_SERVICE  -> NULL process
+                // >RunningAppProcessInfo.IMPORTANCE_VISIBLE -> background process
                 if (process.importance > RunningAppProcessInfo.IMPORTANCE_VISIBLE) {
-                    // pkgList 得到该进程下运行的包名
+                    // pkgList get packages in this process
                     String[] pkgList = process.pkgList;
                     for (String pkgName : pkgList) {
-                        Loger.debug("======正在杀死包名：" + pkgName);
+                        Loger.debug("======killing：" + pkgName);
                         try {
                             am.killBackgroundProcesses(pkgName);
                             count++;
-                        } catch (Exception e) { // 防止意外发生
+                        } catch (Exception e) {
                             e.getStackTrace();
                             continue;
                         }
                     }
                 }
             }
-        Loger.debug("清理了" + (getDeviceUsableMemory(cxt) - i) + "M内存");
+        Loger.debug("Clean" + (getDeviceUsableMemory(cxt) - i) + "M memory!");
         return count;
     }
 }

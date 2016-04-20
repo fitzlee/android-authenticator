@@ -60,18 +60,15 @@ public class NetUtils {
 
             int responseCode = conn.getResponseCode();
             if (responseCode == 200) {
-
                 InputStream is = conn.getInputStream();
                 String response = getStringFromInputStream(is);
                 return response;
             } else {
                 throw new NetworkErrorException("response status is "+responseCode);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-
             if (conn != null) {
                 conn.disconnect();
             }

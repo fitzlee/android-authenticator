@@ -1,7 +1,5 @@
 package org.xwiki.android.authenticator.rest;
 
-import android.content.res.XmlResourceParser;
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;

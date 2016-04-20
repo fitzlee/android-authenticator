@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.xwiki.android.authenticator.R;
+import org.xwiki.android.authenticator.utils.StringUtils;
 
 
 /**
@@ -36,7 +37,7 @@ public class SignUpActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        StatusBarCompat.compat(this, Color.parseColor("#0077D9"));
+        StatusBarColorCompat.compat(this, Color.parseColor("#0077D9"));
 
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
@@ -67,7 +68,7 @@ public class SignUpActivity extends AppCompatActivity {
             if(flag==true) {
                 finish();
             }else{
-                Toast.makeText(SignUpActivity.this,"请检查输入信息后保存",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivity.this,"please check again",Toast.LENGTH_SHORT).show();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -76,7 +77,6 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean save(){
         return true;
     }
-
 
     /**
      * Attempts to check input TODO check server permission or save priority in local preference
@@ -99,7 +99,7 @@ public class SignUpActivity extends AppCompatActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPhoneValid(password)) {
+        if (!TextUtils.isEmpty(password) && !StringUtils.isPhone(password)) {
             mCellPhoneView.setError(getString(R.string.error_invalid_password));
             focusView = mCellPhoneView;
             cancel = true;
@@ -110,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!StringUtils.isEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -123,21 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isNameValid(String name){
-        return false;
-    }
-
-    private boolean isPhoneValid(String phone){
-        return false;
     }
 
 }

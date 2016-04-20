@@ -1,44 +1,26 @@
-/*
- * Copyright (c) 2014,KJFrameForAndroid Open Source Project,张涛.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.xwiki.android.authenticator.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 /**
- * 字符串操作工具包<br>
- * 
- * <b>创建时间</b> 2014-8-14
- * 
- * @author kymjs (https://github.com/kymjs)
- * @version 1.1
+ * String Time Utils
  */
 public class StringUtils {
     private final static Pattern emailer = Pattern
             .compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
-    private final static Pattern phone = Pattern
-            .compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+//    private final static Pattern phone = Pattern
+//            .compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
 
     /**
-     * 判断给定字符串是否空白串 空白串是指由空格、制表符、回车符、换行符组成的字符串 若输入字符串为null或空字符串，返回true
+     * whether input is '', null,'\t' '\r' '\n'  or not.
+     * '', null, return ture
+     * many '\t' '\r' '\n' return true;
+     * other false
      */
     public static boolean isEmpty(CharSequence input) {
         if (input == null || "".equals(input))
@@ -54,7 +36,10 @@ public class StringUtils {
     }
 
     /**
-     * 判断给定字符串是否空白串 空白串是指由空格、制表符、回车符、换行符组成的字符串 若输入字符串为null或空字符串，返回true
+     * whether input is '', null,'\t' '\r' '\n'  or not.
+     * '', null, return ture
+     * many '\t' '\r' '\n' return true;
+     * other false
      */
     public static boolean isEmpty(CharSequence... strs) {
         for (CharSequence str : strs) {
@@ -66,7 +51,7 @@ public class StringUtils {
     }
 
     /**
-     * 判断是不是一个合法的电子邮件地址
+     * whether email is valid or not
      */
     public static boolean isEmail(CharSequence email) {
         if (isEmpty(email))
@@ -75,16 +60,17 @@ public class StringUtils {
     }
 
     /**
-     * 判断是不是一个合法的手机号码
+     * whether phone is valid or not
      */
     public static boolean isPhone(CharSequence phoneNum) {
         if (isEmpty(phoneNum))
             return false;
-        return phone.matcher(phoneNum).matches();
+        return true;
+//        return phone.matcher(phoneNum).matches();
     }
 
     /**
-     * 返回当前系统时间
+     * return system time with format
      */
     public static String getDataTime(String format) {
         SimpleDateFormat df = new SimpleDateFormat(format);
@@ -92,7 +78,7 @@ public class StringUtils {
     }
 
     /**
-     * 字符串转整数
+     * String to int
      * 
      * @param str
      * @param defValue
@@ -106,23 +92,12 @@ public class StringUtils {
         return defValue;
     }
 
-    /**
-     * 对象转整
-     * 
-     * @param obj
-     * @return 转换异常返回 0
-     */
-    public static int toInt(Object obj) {
-        if (obj == null)
-            return 0;
-        return toInt(obj.toString(), 0);
-    }
 
     /**
-     * String转long
+     * String to long
      * 
      * @param obj
-     * @return 转换异常返回 0
+     * @return exception return 0
      */
     public static long toLong(String obj) {
         try {
@@ -133,10 +108,10 @@ public class StringUtils {
     }
 
     /**
-     * String转double
+     * String to double
      * 
      * @param obj
-     * @return 转换异常返回 0
+     * @return exception return 0
      */
     public static double toDouble(String obj) {
         try {
@@ -147,10 +122,10 @@ public class StringUtils {
     }
 
     /**
-     * 字符串转布尔
+     * String to boolean
      * 
      * @param b
-     * @return 转换异常返回 false
+     * @return exception false
      */
     public static boolean toBool(String b) {
         try {
@@ -161,7 +136,7 @@ public class StringUtils {
     }
 
     /**
-     * 判断一个字符串是不是数字
+     * whether a string is a valid integer
      */
     public static boolean isNumber(CharSequence str) {
         try {
@@ -173,11 +148,11 @@ public class StringUtils {
     }
 
     /**
-     * byte[]数组转换为16进制的字符串。
+     * byte[] to Hex String。
      * 
      * @param data
-     *            要转换的字节数组。
-     * @return 转换后的结果。
+     *            input.
+     * @return String.
      */
     public static final String byteArrayToHexString(byte[] data) {
         StringBuilder sb = new StringBuilder(data.length * 2);
@@ -192,17 +167,16 @@ public class StringUtils {
     }
 
     /**
-     * 16进制表示的字符串转换为字节数组。
+     * Hex String to byte[].
      * 
      * @param s
-     *            16进制表示的字符串
-     * @return byte[] 字节数组
+     *            intput String
+     * @return byte[]
      */
     public static byte[] hexStringToByteArray(String s) {
         int len = s.length();
         byte[] d = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
-            // 两位一组，表示一个字节,把这样表示的16进制字符串，还原成一个进制字节
             d[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character
                     .digit(s.charAt(i + 1), 16));
         }
@@ -224,75 +198,10 @@ public class StringUtils {
     };
 
     /**
-     * 以友好的方式显示时间
+     * String to Date
      * 
      * @param sdate
-     * @return
-     */
-    public static String friendlyTime(String sdate) {
-        Date time = null;
-
-        if (isInEasternEightZones()) {
-            time = toDate(sdate);
-        } else {
-            time = transformTime(toDate(sdate), TimeZone.getTimeZone("GMT+08"),
-                    TimeZone.getDefault());
-        }
-
-        if (time == null) {
-            return "Unknown";
-        }
-        String ftime = "";
-        Calendar cal = Calendar.getInstance();
-
-        // 判断是否是同一天
-        String curDate = dateFormater2.get().format(cal.getTime());
-        String paramDate = dateFormater2.get().format(time);
-        if (curDate.equals(paramDate)) {
-            int hour = (int) ((cal.getTimeInMillis() - time.getTime()) / 3600000);
-            if (hour == 0)
-                ftime = Math.max(
-                        (cal.getTimeInMillis() - time.getTime()) / 60000, 1)
-                        + "分钟前";
-            else
-                ftime = hour + "小时前";
-            return ftime;
-        }
-
-        long lt = time.getTime() / 86400000;
-        long ct = cal.getTimeInMillis() / 86400000;
-        int days = (int) (ct - lt);
-        if (days == 0) {
-            int hour = (int) ((cal.getTimeInMillis() - time.getTime()) / 3600000);
-            if (hour == 0)
-                ftime = Math.max(
-                        (cal.getTimeInMillis() - time.getTime()) / 60000, 1)
-                        + "分钟前";
-            else
-                ftime = hour + "小时前";
-        } else if (days == 1) {
-            ftime = "昨天";
-        } else if (days == 2) {
-            ftime = "前天 ";
-        } else if (days > 2 && days < 31) {
-            ftime = days + "天前";
-        } else if (days >= 31 && days <= 2 * 31) {
-            ftime = "一个月前";
-        } else if (days > 2 * 31 && days <= 3 * 31) {
-            ftime = "2个月前";
-        } else if (days > 3 * 31 && days <= 4 * 31) {
-            ftime = "3个月前";
-        } else {
-            ftime = dateFormater2.get().format(time);
-        }
-        return ftime;
-    }
-
-    /**
-     * 将字符串转位日期类型
-     * 
-     * @param sdate
-     * @return
+     * @return Date
      */
     public static Date toDate(String sdate) {
         return toDate(sdate, dateFormater.get());
@@ -307,7 +216,7 @@ public class StringUtils {
     }
 
     /**
-     * 判断用户的设备时区是否为东八区（中国） 2014年7月31日
+     * whether timezone is GMT+08
      * 
      * @return
      */
@@ -321,7 +230,7 @@ public class StringUtils {
     }
 
     /**
-     * 根据不同时区，转换时间 2014年7月31日
+     * transfer time from old timezone to new timezone
      */
     public static Date transformTime(Date date, TimeZone oldZone,
             TimeZone newZone) {

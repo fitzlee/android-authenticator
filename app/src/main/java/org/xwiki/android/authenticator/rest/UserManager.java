@@ -24,10 +24,12 @@ public class UserManager {
             public void run() {
                 final List<XWikiUsers> usersList = new ArrayList<XWikiUsers>();
                 final String response = NetUtils.get(url);
+                if(response==null) return;
                 List<SearchResult> list = XmlUtils.getSearchResults(new ByteArrayInputStream(response.getBytes()));
                 for(SearchResult result:list){
-                    String userUrl = "http://xwikichina.com/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/"+result.pageName+"/objects/XWiki.XWikiUsers/0";
+                    String userUrl = "http://xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/"+result.pageName+"/objects/XWiki.XWikiUsers/0";
                     String userInfoResponse = NetUtils.get(userUrl);
+                    if(userInfoResponse==null) continue;
                     XWikiUsers user = XmlUtils.getXWikiUsers(new ByteArrayInputStream(userInfoResponse.getBytes()));
                     usersList.add(user);
                 }

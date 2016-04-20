@@ -1,14 +1,10 @@
 package org.xwiki.android.authenticator.activities;
 
-import android.accounts.AccountManager;
-import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
-import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,20 +19,9 @@ import android.widget.Toast;
 
 
 import org.xwiki.android.authenticator.R;
-import org.xwiki.android.authenticator.bean.SearchResult;
-import org.xwiki.android.authenticator.bean.XWikiUsers;
-import org.xwiki.android.authenticator.rest.AsynNetUtils;
-import org.xwiki.android.authenticator.rest.UserManager;
-import org.xwiki.android.authenticator.rest.XmlUtils;
-import org.xwiki.android.authenticator.syncadapter.BatchOperation;
-import org.xwiki.android.authenticator.syncadapter.ContactManager;
-import org.xwiki.android.authenticator.syncadapter.RawContact;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import org.xwiki.android.authenticator.rest.RestTest;
+import org.xwiki.android.authenticator.utils.StringUtils;
+import org.xwiki.android.authenticator.utils.SystemTools;
 
 
 /**
@@ -61,7 +46,7 @@ public class EditContactActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        StatusBarCompat.compat(this, Color.parseColor("#0077D9"));
+        StatusBarColorCompat.compat(this, Color.parseColor("#0077D9"));
 
         // Set up the login form.
         mEmailView = (EditText) findViewById(R.id.email);
@@ -72,56 +57,10 @@ public class EditContactActivity extends AppCompatActivity {
         mUri = getIntent().getData();
         mContactInfoTextView = (TextView) findViewById(R.id.contactinfo);
 
-//        fetchContacts(mUri);
-//        testGETUsers();
-//        testGetUserInfo();
-        testGETAllUsers();
+        if(SystemTools.checkNet(this)) {
+            RestTest.testGetAllUsers(mContactInfoTextView);
+        }
     }
-
-    void testGETAllUsers(){
-        String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers&number=20";
-        UserManager.getAllUser(requestUrl, new UserManager.Callback() {
-            @Override
-            public void onResponse(List<XWikiUsers> usersList) {
-                mContactInfoTextView.setText(usersList.toString());
-            }
-        });
-    }
-
-    void testGET(){
-        String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers&number=20";
-        AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
-            @Override
-            public void onResponse(String response) {
-                mContactInfoTextView.setText(response);
-                List<SearchResult> list = XmlUtils.getSearchResults(new ByteArrayInputStream(response.getBytes()));
-                mContactInfoTextView.append(list.toString());
-            }
-        });
-    }
-
-    void testGetUserInfo(){
-        String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/fitz/objects/XWiki.XWikiUsers/0";
-        AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
-            @Override
-            public void onResponse(String response) {
-                mContactInfoTextView.setText(response);
-                XWikiUsers user = XmlUtils.getXWikiUsers(new ByteArrayInputStream(response.getBytes()));
-                mContactInfoTextView.setText(user.toString());
-            }
-        });
-    }
-
-
-    void apiTest(){
-        //sql query  getUsersModified getUsersModifiedFromOneGroup getAllGroups
-        // xml -> searchResult -> objects -> objects detail　-> store db
-
-        //modify or edit object ->  xml -> requestUpdate put post -> server
-        //updateUser deleteUser
-        //
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,15 +78,10 @@ public class EditContactActivity extends AppCompatActivity {
             if(flag==true) {
                 finish();
             }else{
-                Toast.makeText(EditContactActivity.this,"Please Check Firstly",Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditContactActivity.this,"Please Check Again",Toast.LENGTH_SHORT).show();
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean save(){
-        updataCotact(mUri);
-        return true;
     }
 
 
@@ -171,99 +105,13 @@ public class EditContactActivity extends AppCompatActivity {
 //        Log.i("edit",rawContact.toString());
 //        ContactManager.updateContactLocal(this, getContentResolver(), rawContact, rawContactId);
 
-
 //        ContactManager.updateContact(getApplicationContext(),getContentResolver(),rawContact,false,false,false,true,rawContactId,batchOperation);
 
-//        ContentValues values = new ContentValues();
-//        values.put(Phone.NUMBER, "13800138000");
-//        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, Phone.TYPE_MOBILE);
-//        String where = ContactsContract.Data.RAW_CONTACT_ID + "=? AND "
-//                + ContactsContract.Data.MIMETYPE + "=?";
-//        String[] selectionArgs = new String[] { String.valueOf(rawContactId),
-//                Phone.CONTENT_ITEM_TYPE };
-//        getContentResolver().update(ContactsContract.Data.CONTENT_URI, values,
-//                where, selectionArgs);
     }
 
-    public void fetchContacts(Uri uri) {
-        ContentResolver cr = getContentResolver();
-        //ContactsContract.Contacts.CONTENT_URI
-        Cursor people = cr.query(uri, null, null, null, null);
-        Log.i("cursor", people.toString());
-        String allContacts = "";
-        if (people.getCount() > 0) {
-            while (people.moveToNext()) {
-                String id = people.getString(people.getColumnIndex(ContactsContract.Contacts._ID));
-                String rawContactId = people.getString(people.getColumnIndex(ContactsContract.Contacts.Data.RAW_CONTACT_ID));
-                int nameFieldColumnIndex = people.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME);
-                String contact = people.getString(nameFieldColumnIndex);
-                int numberFieldColumnIndex = people.getColumnIndex(ContactsContract.PhoneLookup.NUMBER);
-                //String number = people.getString(numberFieldColumnIndex);
-                String number = "";
-                if (Integer.parseInt(people.getString(
-                        people.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                    Cursor pCur = cr.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
-                    while (pCur.moveToNext()) {
-                        String email = pCur.getString(
-                                pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DATA));
-                        number += email + "\n";
-                    }
-                    allContacts += contact + ": " + number+",id="+rawContactId+".";
-                    pCur.close();
-                }
-            }
-        }
-        people.close();
-        mContactInfoTextView.setText(mContactInfoTextView.getText()+"  "+allContacts);
-    }
-
-
-    public void addOne(){
-        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-        int rawContactInsertIndex = ops.size();
-
-        Log.i("Line38", "Here");
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, AccountManager.KEY_ACCOUNT_TYPE)
-                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, AccountManager.KEY_ACCOUNT_NAME)
-                .build());
-
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, "u232786seee")
-                .withValue(ContactsContract.CommonDataKinds.StructuredName.IN_VISIBLE_GROUP, true)
-                .build());
-
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                .withValue(ContactsContract.Data.MIMETYPE,
-                        ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER,"23232343434")
-                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, "4343")
-                .build());
-
-        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
-                .withValue(ContactsContract.Data.MIMETYPE,
-                        ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-                .withValue(ContactsContract.CommonDataKinds.Email.DATA, "")
-                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, "")
-                .build());
-
-        //Log.i("Line43", Data.CONTENT_URI.toString()+" - "+rawContactInsertIndex);
-
-        try {
-            getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-        } catch (RemoteException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (OperationApplicationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    private boolean save(){
+        updataCotact(mUri);
+        return true;
     }
 
 
@@ -273,7 +121,6 @@ public class EditContactActivity extends AppCompatActivity {
      * errors are presented and no server checking is made.
      */
     private void checkInputAndPermission() {
-
         // Reset errors.
         mEmailView.setError(null);
         mCellPhoneView.setError(null);
@@ -288,7 +135,7 @@ public class EditContactActivity extends AppCompatActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPhoneValid(password)) {
+        if (!TextUtils.isEmpty(password) && !StringUtils.isPhone(password)) {
             mCellPhoneView.setError(getString(R.string.error_invalid_password));
             focusView = mCellPhoneView;
             cancel = true;
@@ -299,7 +146,7 @@ public class EditContactActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!StringUtils.isEmail(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -312,21 +159,7 @@ public class EditContactActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isNameValid(String name){
-        return false;
-    }
-
-    private boolean isPhoneValid(String phone){
-        return false;
     }
 
 }
