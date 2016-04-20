@@ -24,22 +24,21 @@ sign in/up
 
 solr search for example:
 
-* Get All Users:(DONE)
+* Get All Users:(DONE)   
 http://www.xwiki.org/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers   
 default number<=10   
 http://www.xwiki.org/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers&number=100   
-* Get User Information(DONE)
+* Get User Information(DONE)   
 for example XWiki.LudovicDubost    
 http://www.xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/LudovicDubost   
 http://www.xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/LudovicDubost/objects/XWiki.XWikiUsers/0/properties   
-* Get Groups
+* Get Groups(TODO)   
 http://www.xwiki.org/xwiki/rest/wikis/query?q=wiki:xwiki%20and%20object:XWiki.XWikiGroups&number=20   
+* Get User From Group(TODO)   
+for example XWikiAdminGroup:
 http://www.xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/XWikiAdminGroup  
-* Get User From Group
 http://www.xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/XWikiAdminGroup/objects   
-XWiki.LudovicDubost   
-http://www.xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/LudovicDubost   
-http://www.xwiki.org/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/LudovicDubost/objects/XWiki.XWikiUsers/0/properties   
+
 
 ### local contact manage(TODO)
 ### synAdapter(TODO)
