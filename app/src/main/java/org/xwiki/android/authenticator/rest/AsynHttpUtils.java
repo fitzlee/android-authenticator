@@ -2,17 +2,13 @@ package org.xwiki.android.authenticator.rest;
 
 import android.os.Handler;
 
-import org.xwiki.android.authenticator.bean.SearchResult;
-import org.xwiki.android.authenticator.bean.XWikiUsers;
-
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.http.protocol.HTTP;
 
 /**
  * Created by fitz on 2016/4/16.
  */
-public class AsynNetUtils {
+public class AsynHttpUtils extends HttpConnector{
+
     public interface Callback{
         void onResponse(String response);
     }
@@ -22,7 +18,7 @@ public class AsynNetUtils {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final String response = NetUtils.get(url);
+                final String response = get(url);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -38,7 +34,7 @@ public class AsynNetUtils {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final String response = NetUtils.post(url,content);
+                final String response = HttpConnector.post(url,content);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

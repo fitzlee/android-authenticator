@@ -12,8 +12,8 @@ import java.net.URL;
 /**
  * Created by fitz on 2016/4/16.
  */
-public class NetUtils {
-    public static String post(String url, String content) {
+public class HttpConnector {
+    public String post(String url, String content) {
         HttpURLConnection conn = null;
         try {
             URL mURL = new URL(url);
@@ -48,7 +48,7 @@ public class NetUtils {
         return null;
     }
 
-    public static String get(String url) {
+    public String get(String url) {
         HttpURLConnection conn = null;
         try {
             URL mURL = new URL(url);

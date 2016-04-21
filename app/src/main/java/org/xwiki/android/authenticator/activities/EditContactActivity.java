@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import org.xwiki.android.authenticator.R;
 import org.xwiki.android.authenticator.rest.RestTest;
+import org.xwiki.android.authenticator.utils.StatusBarColorCompat;
 import org.xwiki.android.authenticator.utils.StringUtils;
 import org.xwiki.android.authenticator.utils.SystemTools;
 

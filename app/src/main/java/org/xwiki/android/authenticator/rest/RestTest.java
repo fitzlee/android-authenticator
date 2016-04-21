@@ -24,7 +24,7 @@ public class RestTest {
 
     public static void testGetSearchResult(final TextView textView){
         String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/query?q=object:XWiki.XWikiUsers&number=20";
-        AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
+        AsynHttpUtils.get(requestUrl, new AsynHttpUtils.Callback() {
             @Override
             public void onResponse(String response) {
                 textView.setText(response);
@@ -36,7 +36,7 @@ public class RestTest {
 
     public static void testGetUserInfo(final TextView textView){
         String requestUrl = "http://xwikichina.com/xwiki/rest/wikis/xwiki/spaces/XWiki/pages/fitz/objects/XWiki.XWikiUsers/0";
-        AsynNetUtils.get(requestUrl, new AsynNetUtils.Callback() {
+        AsynHttpUtils.get(requestUrl, new AsynHttpUtils.Callback() {
             @Override
             public void onResponse(String response) {
                 textView.setText(response);
