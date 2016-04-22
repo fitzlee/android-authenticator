@@ -10,7 +10,7 @@ import java.util.Map;
  * Form http request
  * Created by fitz on 2016/4/16.
  */
-public class FormRequest extends Request<byte[]> {
+public class FormRequest extends Request{
 
     private final HttpParams mParams;
 

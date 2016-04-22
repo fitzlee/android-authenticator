@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2014, 张涛.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.xwiki.android.authenticator.restbackup;
 
 import android.net.TrafficStats;
@@ -24,13 +9,7 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * 一个请求基类
- *
- * @param <T> Http返回类型
- * @author kymjs (http://www.kymjs.com/) .
- */
-public abstract class Request<T> implements Comparable<Request<T>> {
+public abstract class Request implements Comparable{
 
     /**
      * 默认编码 {@link #getParamsEncoding()}.
@@ -111,7 +90,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         return 0;
     }
 
-    public final Request<?> setSequence(int sequence) {
+    public final Request setSequence(int sequence) {
         mSequence = sequence;
         return this;
     }
@@ -192,7 +171,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         }
     }
 
-    public final Request<?> setShouldCache(boolean shouldCache) {
+    public final Request setShouldCache(boolean shouldCache) {
         mShouldCache = shouldCache;
         return this;
     }
@@ -248,16 +227,7 @@ public abstract class Request<T> implements Comparable<Request<T>> {
         mCallback.onFinish();
     }
 
-    /**
-     * 用于线程优先级排序
-     */
-    @Override
-    public int compareTo(Request<T> other) {
-        Priority left = this.getPriority();
-        Priority right = other.getPriority();
-        return left == right ? this.mSequence - other.mSequence : right
-                .ordinal() - left.ordinal();
-    }
+
 
     @Override
     public String toString() {
