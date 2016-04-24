@@ -61,4 +61,8 @@ public class FormRequest extends Request{
         return bos.toByteArray();
     }
 
+    @Override
+    public int compareTo(Object another) {
+        return 0;
+    }
 }
