@@ -1,5 +1,6 @@
 package org.xwiki.android.authenticator.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -165,6 +166,17 @@ public class StringUtils {
         }
         return sb.toString().toUpperCase(Locale.getDefault());
     }
+
+    public static final String byteArrayToUtf8String(byte[] bytes){
+        String result = null;
+        try {
+            result = new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     /**
      * Hex String to byte[].

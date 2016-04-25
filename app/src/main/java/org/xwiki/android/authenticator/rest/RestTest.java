@@ -12,8 +12,18 @@ import java.util.List;
  * Created by fitz on 2016/4/20.
  */
 public class RestTest {
+
+    public static void testLogin(final TextView textView){
+        LoginManager.Login("fitz","fitz2xwiki", new LoginManager.Callback() {
+            @Override
+            public void onResponse(String response) {
+                textView.append(response);
+            }
+        });
+    }
+
     public static void testGetAllUsers(final TextView textView){
-        String requestUrl = "http://xwiki.org/xwiki/rest/wikis/query?q=wiki:xwiki%20and%20object:XWiki.XWikiUsers&number=20";
+        String requestUrl = "http://xwiki.org/xwiki/rest/wikis/query?q=wiki:xwiki%20and%20object:XWiki.XWikiUsers&number=10";
         UserManager.getAllUser(requestUrl, new UserManager.Callback() {
             @Override
             public void onResponse(List<XWikiUsers> usersList) {
@@ -45,6 +55,9 @@ public class RestTest {
             }
         });
     }
+
+
+
 
     void apiTest(){
         //sql query  getUsersModified getUsersModifiedFromOneGroup getAllGroups

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.xwiki.android.authenticator.restbackup;
+package org.xwiki.android.authenticator.myrest;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -29,9 +29,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 /**
- * HTTPS信任证书
- *
- * @author kymjs (http://www.kymjs.com/) on 9/23/15.
+ * HTTPS CA TRUST
  */
 public class HTTPSTrustManager implements X509TrustManager {
 

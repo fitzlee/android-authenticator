@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 
 import org.xwiki.android.authenticator.R;
+import org.xwiki.android.authenticator.myrest.HttpCallback;
+import org.xwiki.android.authenticator.myrest.Test;
 import org.xwiki.android.authenticator.rest.RestTest;
 import org.xwiki.android.authenticator.utils.StatusBarColorCompat;
 import org.xwiki.android.authenticator.utils.StringUtils;
@@ -59,7 +61,36 @@ public class EditContactActivity extends AppCompatActivity {
         mContactInfoTextView = (TextView) findViewById(R.id.contactinfo);
 
         if(SystemTools.checkNet(this)) {
-            RestTest.testGetAllUsers(mContactInfoTextView);
+//            RestTest.testLogin(mContactInfoTextView);
+//            RestTest.testGetAllUsers(mContactInfoTextView);
+            Test.testLogin(new HttpCallback() {
+                @Override
+                public void onSuccess(Object obj) {
+                    super.onSuccess(obj);
+//                    byte[] bytes = (byte[]) obj;
+                    mContactInfoTextView.append(StringUtils.byteArrayToUtf8String((byte[]) obj));
+                }
+
+                @Override
+                public void onFailure(String msg) {
+                    super.onFailure(msg);
+                    mContactInfoTextView.append(msg);
+                }
+            });
+
+            Test.testGetAllUser(new HttpCallback() {
+                @Override
+                public void onSuccess(Object obj) {
+                    super.onSuccess(obj);
+                    mContactInfoTextView.append(obj.toString());
+                }
+
+                @Override
+                public void onFailure(String msg) {
+                    super.onFailure(msg);
+                    mContactInfoTextView.append(msg);
+                }
+            });
         }
     }
 

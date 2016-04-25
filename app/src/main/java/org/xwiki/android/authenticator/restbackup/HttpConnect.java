@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.xwiki.android.authenticator.myrest.HTTPSTrustManager;
 import org.xwiki.android.authenticator.restbackup.Request.HttpMethod;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -48,7 +49,7 @@ public class HttpConnect{
         mSslSocketFactory = sslSocketFactory;
     }
 
-    public HttpResponse performRequest(Request<?> request,
+    public HttpResponse performRequest(Request request,
                                        Map<String, String> additionalHeaders) throws IOException {
         String url = request.getUrl();
         HashMap<String, String> map = new HashMap<String, String>();
@@ -112,7 +113,7 @@ public class HttpConnect{
 
 
 
-    private HttpURLConnection openConnection(URL url, Request<?> request)
+    private HttpURLConnection openConnection(URL url, Request request)
             throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -137,7 +138,7 @@ public class HttpConnect{
 
     /* package */
     static void setConnectionParametersForRequest(
-            HttpURLConnection connection, Request<?> request)
+            HttpURLConnection connection, Request request)
             throws IOException {
         switch (request.getMethod()) {
             case HttpMethod.GET:
@@ -176,7 +177,7 @@ public class HttpConnect{
      * 如果有body则添加
      */
     private static void addBodyIfExists(HttpURLConnection connection,
-                                        Request<?> request) throws IOException {
+                                        Request request) throws IOException {
         byte[] body = request.getBody();
         if (body != null) {
             connection.setDoOutput(true);
